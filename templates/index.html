@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Management System</title>
+    <title>Library Management System</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -16,7 +17,7 @@
 
         h1 { color: #203864; }
 
-        form, .student {
+        .panel, .book {
             background: white;
             padding: 16px;
             margin-bottom: 12px;
@@ -24,57 +25,74 @@
         }
 
         input {
-            padding: 10px;
-            margin: 5px 0;
+            display: block;
             width: 95%;
+            padding: 10px;
+            margin: 8px 0;
         }
 
         button {
-            padding: 9px 14px;
-            cursor: pointer;
+            padding: 10px 14px;
             background: #203864;
             color: white;
             border: 0;
             border-radius: 4px;
+            cursor: pointer;
         }
 
-        .student {
+        .book {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            gap: 12px;
+            justify-content: space-between;
+            gap: 15px;
         }
+
+        .details { overflow-wrap: anywhere; }
     </style>
 </head>
+
 <body>
-    <h1>Student Management System</h1>
-    <p>Manage student records using Flask and SQLite.</p>
+    <h1>Library Management System</h1>
+    <p>Manage your library inventory in one place.</p>
 
-    <h2>Add Student</h2>
-    <form action="/add" method="POST">
-        <input name="name" placeholder="Student name" required>
-        <input name="email" type="email" placeholder="Email" required>
-        <input name="course" placeholder="Course" required>
-        <button type="submit">Add Student</button>
-    </form>
+    <div class="panel">
+        <h2>Add a Book</h2>
+        <form action="/add" method="POST">
+            <input name="title" placeholder="Book title" required>
+            <input name="author" placeholder="Author name" required>
+            <input name="category" placeholder="Category" required>
+            <button type="submit">Add Book</button>
+        </form>
+    </div>
 
-    <h2>Student Records</h2>
+    <div class="panel">
+        <h2>Search Books</h2>
+        <form action="/" method="GET">
+            <input name="search"
+                   placeholder="Search by title or author"
+                   value="{{ search }}">
+            <button type="submit">Search</button>
+            <a href="/">Show All</a>
+        </form>
+    </div>
 
-    {% for student in students %}
-        <div class="student">
-            <div>
-                <strong>{{ student.name }}</strong><br>
-                {{ student.email }}<br>
-                Course: {{ student.course }}<br>
-                ID: {{ student.id }}
+    <h2>Book Inventory</h2>
+
+    {% for book in books %}
+        <div class="book">
+            <div class="details">
+                <strong>{{ book.title }}</strong><br>
+                Author: {{ book.author }}<br>
+                Category: {{ book.category }}<br>
+                Book ID: {{ book.id }}
             </div>
 
-            <form action="/delete/{{ student.id }}" method="POST">
+            <form action="/delete/{{ book.id }}" method="POST">
                 <button type="submit">Delete</button>
             </form>
         </div>
     {% else %}
-        <p>No students added yet.</p>
+        <p>No books found. Add a book to get started.</p>
     {% endfor %}
 </body>
 </html>

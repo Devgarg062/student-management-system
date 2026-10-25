@@ -1,5 +1,5 @@
 
-name: Student Management CI-CD
+name: Library Management CI-CD
 
 on:
   push:
@@ -27,4 +27,4 @@ jobs:
         run: python -m unittest -v
 
       - name: Build Docker image
-        run: docker build -t student-management-system .
+        run: docker build -t library-management-system .
